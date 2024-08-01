@@ -3,7 +3,7 @@ import Image from "next/image";
 import {useState, useEffect} from 'react';
 import { firestore, Firestore } from "@/firebase";
 import { Box, Typography } from "@mui/material";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDoc, query } from "firebase/firestore";
 
 export default function Home() {
   const [inventory, setInventory] = useState([])
@@ -12,7 +12,7 @@ export default function Home() {
 
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, 'inventory'))
-    const docs = await getDocs(snapshot)
+    const docs = await getDoc(snapshot)
     const inventoryList = []
     docs.forEach((doc)=>{
       inventoryList.push({
@@ -23,6 +23,8 @@ export default function Home() {
     setInventory(inventoryList)
   }
 
+  //const removeItem
+
   useEffect(() => {
     updateInventory()
   }, [])
@@ -30,6 +32,17 @@ export default function Home() {
   return (
     <Box>
       <Typography variant="h1">Inventory Management</Typography>
+      {
+        inventory.forEach((item) => {
+          console.log(item)
+          return(
+            <Box>
+            {item.name}
+            {item.count}
+            </Box>
+          )
+        }
+      )}
     </Box>  
   )
 }
