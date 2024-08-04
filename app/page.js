@@ -3,7 +3,7 @@ import Image from "next/image";
 import {useState, useEffect} from 'react';
 import { firestore, Firestore } from "@/firebase";
 import { Box, Button, Modal, TextField, Typography} from "@mui/material";
-import { collection, deleteDoc, getDoc, getDocs, query, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, getDoc, getDocs, query, setDoc, doc } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { Stack } from "@mui/system";
 
@@ -127,7 +127,7 @@ export default function Home() {
       >
         Add New Item
       </Button>
-      <Box borders="1px solid #333">
+      <Box border="1px solid #333">
         <Box 
           width="800px"
           height="100px"
@@ -168,9 +168,14 @@ export default function Home() {
                 >
                   {quantity}
                 </Typography>
-                <Button variant="container" onClick={() => removeItem(name)}>
+                <Stack direction="row" spacing={2}>
+                <Button variant="contained" onClick={() => addItem(name)}>
+                  Add
+                </Button>
+                <Button variant="contained" onClick={() => removeItem(name)}>
                   Remove
                 </Button>
+                </Stack>
               </Box>
             )) }
         </Stack>
