@@ -1,12 +1,11 @@
 'use client'
 import Image from "next/image";
 import {useState, useEffect} from 'react';
-import { firestore } from "@/firebase";
+import {firestore} from "@/firebase"
 import { Box, Button, Modal, TextField, Typography} from "@mui/material";
 import { collection, deleteDoc, getDoc, getDocs, query, setDoc, doc } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { Stack } from "@mui/system";
-import { formatRevalidate } from "next/dist/server/lib/revalidate";
 
 export default function Home() {
   const [inventory, setInventory] = useState([])
