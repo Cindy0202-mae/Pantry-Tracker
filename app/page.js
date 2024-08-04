@@ -1,13 +1,78 @@
 'use client'
 import Image from "next/image";
 import {useState, useEffect} from 'react';
-import {firestore} from "@/firebase"
-import { Box, Button, Modal, TextField, Typography} from "@mui/material";
+import { firestore } from "../firebase";
+import { Autocomplete, Box, Button, Fab, Modal, TextField, Typography} from "@mui/material";
 import { collection, deleteDoc, getDoc, getDocs, query, setDoc, doc } from "firebase/firestore";
 import { async } from "@firebase/util";
 import { Stack } from "@mui/system";
+import AddIcon from '@mui/icons-material/AddCircleOutlined'
+import RemoveIcon from '@mui/icons-material/RemoveCircleOutline'
+import EditIcon from '@mui/icons-material/Edit'
+
+import * as React from 'react';
+import IconButton from '@mui/material/IconButton';
+import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+
+//dark mode or light mode
+function MyApp() {
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'background.default',
+        color: 'text.primary',
+        borderRadius: 1,
+        p: 3,
+      }}
+    >
+      {theme.palette.mode} mode
+      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+//function ToggleColorMode(){
+  
+
+  
+
+// end
+
 
 export default function Home() {
+
+  const [mode, setMode] = React.useState('light');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode],
+  );
+
   const [inventory, setInventory] = useState([])
   const [open, setOpen] = useState(false)
   const [itemName, setItemName] = useState('')
@@ -39,7 +104,7 @@ export default function Home() {
 
     await updateInventory()
   }
-
+//remove item from the pantry
   const removeItem = async (item) => {
     const docRef = doc(collection(firestore, 'inventory'), item)
     const docSnap = await getDoc(docRef)
@@ -55,6 +120,9 @@ export default function Home() {
 
     await updateInventory()
   }
+
+//edit item from the pantry 
+// const editItem = 
 
   useEffect(() => {
     updateInventory()
@@ -73,7 +141,6 @@ export default function Home() {
       alignItems={'center'}
       gap={2} 
     >
-    
       <Modal
         open={open}
         onClose={handleClose}
@@ -119,14 +186,35 @@ export default function Home() {
           </Stack>
         </Box>
       </Modal>
+      <Box>
+      <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <MyApp />
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+      <Typography variant="h4">Welcome to Pantry Tracker</Typography>
+    </Box>
       <Button
-        variant="contained"
+        variant="contained" 
         onClick={() => {
           handleOpen()
         }}
       >
         Add New Item
-      </Button>
+      </Button> 
+      <Stack spacing={2} sx={{ width: 200 }}>
+      <Autocomplete
+        freeSolo
+        disableClearable
+        renderInput={(itemName) => (
+          <TextField
+            {...itemName}
+            label="Search Input"
+
+          />
+        )}
+      />
+      </Stack>
       <Box border="1px solid #333">
         <Box 
           width="800px"
@@ -151,7 +239,7 @@ export default function Home() {
                 display="flex"
                 alignItems="center"
                 justifyContent="space-between"
-                bgColor="#f0f0f0"
+                bgColor="#5e8033"
                 padding={5}
               >
                 <Typography 
@@ -169,17 +257,20 @@ export default function Home() {
                   {quantity}
                 </Typography>
                 <Stack direction="row" spacing={2}>
-                <Button variant="contained" onClick={() => addItem(name)}>
-                  Add
-                </Button>
-                <Button variant="contained" onClick={() => removeItem(name)}>
-                  Remove
-                </Button>
+                <Fab color="primary" aria-label="add" size= "small">
+                  <EditIcon />
+                </Fab>
+                <Fab color="primary" aria-label="add" size= "small" onClick={() => addItem(name)}>
+                  <AddIcon />
+                </Fab>
+                <Fab color="secondary" aria-label="remove" size="small" onClick={() => removeItem(name)}>
+                <RemoveIcon />
+                </Fab>
                 </Stack>
               </Box>
             )) }
         </Stack>
       </Box>
-    </Box>  
+    </Box> 
   )
 }
