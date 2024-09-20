@@ -9,15 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.6",
-    "@mui/material": "^5.16.6",
+    "@mui/material": "^5.16.7",
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.5.0",
     "clsx": "^2.1.1",
-    "firebase": "^10.12.4",
+    "firebase": "^10.13.1",
     "framer-motion": "^11.3.31",
     "next": "14.2.5",
     "react": "^18",

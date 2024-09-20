@@ -1,4 +1,5 @@
 'use client';
+import * as React from 'react';
 import {useState, useEffect} from 'react';
 import { firestore } from "../firebase";
 import { Autocomplete, Box, Button, Fab, Modal, TextField, Typography} from "@mui/material";
@@ -8,14 +9,15 @@ import { Stack } from "@mui/system";
 import AddIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveIcon from '@mui/icons-material/RemoveCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
-import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import { useTheme, ThemeProvider, createTheme, PaletteMode } from '@mui/material/styles';
 
-
-// background 
-import React from "react";
-import { SparklesCore } from "../components/ui/sparkles";
 
 export default function Home() {
+
+  //dark mode and light mode
+/* const [mode, setMode] = React.useState<PaletteMode>('light');
+const MPTheme = createTheme(getMPTheme(mode)); */
+  
 
   const [inventory, setInventory] = useState([])
   const [open, setOpen] = useState(false)
@@ -76,18 +78,6 @@ export default function Home() {
   const handleClose = () => setOpen(false)
 
   return (
-    <div className="h-[40rem] relative w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-      <div className="w-full absolute inset-0 h-screen">
-        <SparklesCore
-          id="tsparticlesfullpage"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={100}
-          className="w-full h-full"
-          particleColor="#FFFFFF"
-        />
-      
         <Box 
           width="100vw"
           height="100vh"
@@ -223,8 +213,5 @@ export default function Home() {
             </Stack>
           </Box>
         </Box> 
-        </div>
-    </div>
-  )
- 
+      )
 }
