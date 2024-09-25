@@ -8,6 +8,5 @@
 
 #### • Add, edit, and delete pantry items
 #### • Track expiration dates of food items
-#### • Receive notifications/reminders for items nearing expiration
 #### • Generate shopping lists based on pantry stock levels
 
